@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { RegisterUsecase } from '@/use-cases/register'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
-import { UserAlreadyExistError } from '@/use-cases/errors/user.already-exist-error'
+import { UserAlreadyExistError } from '@/use-cases/errors/user-already-exist-error'
 
 export async function registerUser(
   request: FastifyRequest,
