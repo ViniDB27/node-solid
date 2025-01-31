@@ -8,7 +8,7 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async findById(userId: string) {
-    throw new Error('not implemented')
+    return await prisma.user.findUnique({ where: { id: userId } })
   }
 
   async findByEmail(email: string) {
