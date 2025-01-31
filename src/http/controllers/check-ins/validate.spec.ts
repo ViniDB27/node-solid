@@ -13,8 +13,8 @@ describe('Validate Check In (e2e)', () => {
     await app.close()
   })
 
-  it.skip('should be able to get metrics of check in', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+  it.only('should be able to validate chekc in', async () => {
+    const { token } = await createAndAuthenticateUser(app, true)
     const user = await prisma.user.findFirstOrThrow()
     const gym = await prisma.gym.create({
       data: {
@@ -31,10 +31,8 @@ describe('Validate Check In (e2e)', () => {
       },
     })
 
-    console.log(gym, `/gyms/${gym.id}/check-ins`)
-
     const response = await request(app.server)
-      .patch(`/check-ins/${chekcIn}/validate`)
+      .patch(`/check-ins/${chekcIn.id}/validate`)
       .set('Authorization', `Bearer ${token}`)
       .send()
 
