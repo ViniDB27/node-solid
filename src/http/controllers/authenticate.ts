@@ -14,7 +14,19 @@ export async function autehnticate(
   const { email, password } = registerBody.parse(request.body)
   try {
     const authenticateUsecase = makeAuthenticateUsecase()
-    await authenticateUsecase.execute({ email, password })
+    const { user } = await authenticateUsecase.execute({ email, password })
+    const token = reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      },
+    )
+
+    return reply.status(200).send({
+      access_tokne: token,
+    })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: error.message })
@@ -22,5 +34,4 @@ export async function autehnticate(
 
     throw error
   }
-  return reply.status(200).send()
 }
