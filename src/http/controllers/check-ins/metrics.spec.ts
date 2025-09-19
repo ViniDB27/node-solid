@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 import { prisma } from '@/lib/prisma'
 
-describe('Metrics Check In (e2e)', () => {
+describe('Check-in Metrics (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -13,14 +13,16 @@ describe('Metrics Check In (e2e)', () => {
     await app.close()
   })
 
-  it.skip('should be able to get metrics of check in', async () => {
+  it('should be able to get the total count of check-ins', async () => {
     const { token } = await createAndAuthenticateUser(app)
+
     const user = await prisma.user.findFirstOrThrow()
+
     const gym = await prisma.gym.create({
       data: {
         title: 'JavaScript Gym',
-        latitude: -27.202978,
-        longitude: -49.6205824,
+        latitude: -27.2092052,
+        longitude: -49.6401091,
       },
     })
 
@@ -37,14 +39,12 @@ describe('Metrics Check In (e2e)', () => {
       ],
     })
 
-    console.log(gym, `/gyms/${gym.id}/check-ins`)
-
     const response = await request(app.server)
-      .get(`/check-ins/metrics`)
+      .get('/check-ins/metrics')
       .set('Authorization', `Bearer ${token}`)
       .send()
 
     expect(response.statusCode).toEqual(200)
-    expect(response.body.metrics).toEqual(2)
+    expect(response.body.checkInsCount).toEqual(2)
   })
 })

@@ -1,10 +1,4 @@
-# dependencies
 node_modules
-coverage
-
-# eviroment
-.env
-
-# production build
-dist
 build
+.env
+coverage

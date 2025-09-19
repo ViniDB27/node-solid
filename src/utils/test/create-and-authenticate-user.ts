@@ -5,7 +5,7 @@ import request from 'supertest'
 
 export async function createAndAuthenticateUser(
   app: FastifyInstance,
-  isAdmin: boolean = false,
+  isAdmin = false,
 ) {
   await prisma.user.create({
     data: {
@@ -16,10 +16,14 @@ export async function createAndAuthenticateUser(
     },
   })
 
-  const response = await request(app.server).post('/sessions').send({
+  const authResponse = await request(app.server).post('/sessions').send({
     email: 'johndoe@example.com',
     password: '123456',
   })
-  const { token } = response.body
-  return { token }
+
+  const { token } = authResponse.body
+
+  return {
+    token,
+  }
 }

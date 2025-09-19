@@ -1,23 +1,27 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { User } from '@prisma/client'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/use-cases/errors/resource-not-found-error'
 
-interface GetUserProfileUsecaseRequest {
+interface GetUserProfileUseCaseRequest {
   userId: string
 }
 
-interface GetUserProfileUsecaseResponse {
+interface GetUserProfileUseCaseResponse {
   user: User
 }
 
-export class GetUserProfileUsecase {
-  constructor(private readonly userRepository: UsersRepository) {}
+export class GetUserProfileUseCase {
+  constructor(private usersRepository: UsersRepository) {}
 
   async execute({
     userId,
-  }: GetUserProfileUsecaseRequest): Promise<GetUserProfileUsecaseResponse> {
-    const user = await this.userRepository.findById(userId)
-    if (!user) throw new ResourceNotFoundError()
+  }: GetUserProfileUseCaseRequest): Promise<GetUserProfileUseCaseResponse> {
+    const user = await this.usersRepository.findById(userId)
+
+    if (!user) {
+      throw new ResourceNotFoundError()
+    }
+
     return {
       user,
     }

@@ -1,22 +1,23 @@
-import { CheckInRepository } from '@/repositories/check-ins-repository'
+import { CheckInsRepository } from '@/repositories/check-ins-repository'
 
-interface GetUserMetricsUsecaseRequest {
+interface GetUserMetricsUseCaseRequest {
   userId: string
 }
 
-interface GetUserMetricsUsecaseResponse {
-  ckeckInsCount: number
+interface GetUserMetricsUseCaseResponse {
+  checkInsCount: number
 }
 
-export class GetUserMetricsUsecase {
-  constructor(private readonly checkInRepository: CheckInRepository) {}
+export class GetUserMetricsUseCase {
+  constructor(private checkInsRepository: CheckInsRepository) {}
 
   async execute({
     userId,
-  }: GetUserMetricsUsecaseRequest): Promise<GetUserMetricsUsecaseResponse> {
-    const ckeckInsCount = await this.checkInRepository.coutnByUserId(userId)
+  }: GetUserMetricsUseCaseRequest): Promise<GetUserMetricsUseCaseResponse> {
+    const checkInsCount = await this.checkInsRepository.countByUserId(userId)
+
     return {
-      ckeckInsCount,
+      checkInsCount,
     }
   }
 }
